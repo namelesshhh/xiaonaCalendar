@@ -1,3 +1,4 @@
+//此类为主程序启动main函数
 import javax.swing.JFrame;  
 import javax.swing.UIManager;  
  
