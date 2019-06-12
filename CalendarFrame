@@ -1,0 +1,323 @@
+
+import java.awt.*;   
+import java.awt.event.*;
+import java.util.Calendar;
+
+import javax.swing.*;
+
+import test.test;  
+ 
+public class CalendarFrame extends JFrame implements ActionListener   
+{   
+	   int cnt = 0;
+       JButton labelDay[]=new JButton[42];
+       JTextField  text=new JTextField(10);  
+       JButton titleName[]=new JButton[7];   
+       JButton button = new JButton();  
+       String name[]={"日","一","二","三", "四","五","六"};   
+       JButton nextMonth,previousMonth,switchForm;   
+       int year=1996,month=1; //启动程序显示的日期信息  
+       CalendarBean calendar;   
+       JLabel showMessage=new JLabel("",JLabel.CENTER);   
+       JLabel lbl1 = new JLabel("请输入年份：");  
+       JLabel lbl2=new JLabel("      ");  
+ 
+       public CalendarFrame()   
+       {
+    	   
+           this.setIconImage(new ImageIcon("D:\\image\\吃蛋挞.jpg").getImage());
+           setBackground(new Color(0, 128, 128));   
+           JPanel pCenter=new JPanel();   
+           pCenter.setBackground(Color.pink);
+             
+         //将pCenter的布局设置为7行7列的GridLayout 布局。   
+           pCenter.setLayout(new GridLayout(7,7));    
+             
+         //pCenter添加组件titleName[i]  
+           for(int i=0;i<7;i++)   
+           {   
+               titleName[i]=new JButton(name[i]);   
+               pCenter.add(titleName[i]);   
+           }   
+ 
+         //pCenter添加组件labelDay[i]  
+           for(int i=0;i<42;i++)   
+           {   
+               labelDay[i]=new JButton(); 
+               labelDay[i].addActionListener(this);
+               pCenter.add(labelDay[i]);  
+           }   
+             
+           text.addActionListener(this);  
+           calendar=new CalendarBean();
+           Calendar cal = Calendar.getInstance();
+           month = cal.get(Calendar.MONTH) + 1;
+           year = cal.get(Calendar.YEAR);
+           calendar.setYear(year);   
+           calendar.setMonth(month);   
+           String day[]=calendar.getCalendar();   
+ 
+           for(int i=0;i<42;i++)   
+           {   
+               labelDay[i].setBackground(Color.pink);
+               labelDay[i].setText(day[i]);
+           
+           }   
+ 
+           nextMonth=new JButton("下月");   
+           previousMonth=new JButton("上月");   
+           button=new JButton("确定");  
+           switchForm = new JButton("转换");  
+           //注册监听器  
+           nextMonth.addActionListener(this);   
+           previousMonth.addActionListener(this);   
+           button.addActionListener(this);  
+             
+           JPanel pNorth=new JPanel(),  
+           pSouth=new JPanel();  
+           pNorth.setBackground(Color.pink);
+           pSouth.setBackground(Color.pink);
+           pNorth.add(showMessage);    
+           pNorth.add(lbl2);    
+           pNorth.add(previousMonth);   
+           pNorth.add(nextMonth); 
+           pNorth.add(switchForm);
+           pSouth.add(lbl1);          
+           pSouth.add(text);  
+           pSouth.add(button);  
+           
+           showMessage.setText("日历："+calendar.getYear()+"年"+ calendar.getMonth()+"月" );  
+           ScrollPane scrollPane=new ScrollPane();   
+           scrollPane.add(pCenter);   
+           getContentPane().add(scrollPane,BorderLayout.CENTER);// 窗口添加scrollPane在中心区域   
+           getContentPane().add(pNorth,BorderLayout.NORTH);// 窗口添加pNorth 在北面区域   
+           getContentPane().add(pSouth,BorderLayout.SOUTH);// 窗口添加pSouth 在南区域。  
+ 
+        }   
+        
+        public void actionPerformed(ActionEvent e)   
+        {  
+        	String fileName = calendar.getYear() + "_year_" +calendar.getMonth()+"_month_"; 
+            if(e.getSource()==nextMonth)   
+            { //  JFrame newFrame = new JFrame();
+            
+                month=month+1;   
+                if(month>12)   
+                month=1;   
+                calendar.setMonth(month);   
+                String day[]=calendar.getCalendar();   
+ 
+                for(int i=0;i<42;i++)   
+                {  
+                    labelDay[i].setText(day[i]);   
+                }   
+             }   
+            else if(e.getSource()==previousMonth)   
+            {   
+                month=month-1;                
+                if(month<1)   
+                month=12;   
+                calendar.setMonth(month);   
+                String day[]=calendar.getCalendar();   
+ 
+                for(int i=0;i<42;i++)   
+                {   
+                    labelDay[i].setText(day[i]);   
+                }   
+             }   
+            else if(e.getSource()==button)  
+            {  
+                month=month+1;                
+                if(month>12)                  
+                      month=1;                
+                calendar.setYear(Integer.parseInt(text.getText()));               
+                String day[]=calendar.getCalendar();                  
+                for(int i=0;i<42;i++)  
+                {  
+                    labelDay[i].setText(day[i]);  
+                }  
+            }
+            else if(e.getSource() ==  labelDay[0]) {
+            	
+            	
+            	if(labelDay[0].getText() != null) {
+            		//选择查看任务或是添加任务
+            		new CalendarSelect(fileName + labelDay[0].getText() + "_day$");
+            	}	
+            }	
+            else if(e.getSource() ==  labelDay[1]) {
+            
+            	if(labelDay[1].getText() != null) {
+            		//选择查看任务或是添加任务
+            		new CalendarSelect(fileName + labelDay[1].getText() + "_day$");
+            	}
+            }
+            else if(e.getSource() ==  labelDay[2]) {
+            	
+            	if(labelDay[2].getText() != null) {
+            		//选择查看任务或是添加任务
+            		new CalendarSelect(fileName + labelDay[2].getText() + "_day$");
+            	}
+            }
+            /*
+            else if(e.getSource() ==  labelDay[3]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[4]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[5]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[6]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[7]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[8]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[9]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[10]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[11]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[12]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[13]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[14]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[15]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[16]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[17]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[18]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[19]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[20]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[21]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[22]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[23]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[24]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[25]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[26]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[27]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[28]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[29]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[30]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[31]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[32]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[33]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[34]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[35]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[36]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[37]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[38]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[39]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[40]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            else if(e.getSource() ==  labelDay[41]) {
+            	System.out.println("OK");
+            	new CalendarFile();
+            }
+            */
+      
+          showMessage.setText("日历："+calendar.getYear()+"年"+calendar.getMonth()+"月" );   
+       }   
+}
