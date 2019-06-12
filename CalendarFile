@@ -1,4 +1,7 @@
-
+/*
+ * 本模块用于存储任务事件及其设定的闹钟提醒
+ * 为了设计简单，将设定的闹钟时间当做保存的文件的名字
+ * */
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -14,10 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
-/*
- * 本模块用于存储任务事件及其设定的闹钟提醒
- * 为了设计简单，将设定的闹钟时间当做保存的文件的名字
- * */
+
 public class CalendarFile implements ActionListener{
 	
     static String filenameTemp;
