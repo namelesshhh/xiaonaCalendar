@@ -1,0 +1,44 @@
+
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class CalendarSelect implements ActionListener{
+	static String fileName;
+	static JButton view = new JButton("查看");
+	static JButton add = new JButton("添加");
+	public CalendarSelect(String fileNameT) {
+	
+		fileName = fileNameT;
+		JFrame base = new JFrame();
+		base.setBounds(400, 400, 200, 200);
+		JPanel center =  new JPanel();
+		base.add(center);
+		center.setLayout(new GridLayout(2,1));
+		view.addActionListener(this);
+		add.addActionListener(this);
+		center.add(view);
+		center.add(add);
+		base.setVisible(true);
+	}
+	
+	public void actionPerformed(ActionEvent e)  {
+		if(e.getSource() == view) {
+			try {
+				new CalendarViewTask(fileName);
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		else if(e.getSource() == add) {
+			new CalendarFile(fileName);
+		}
+	}
+	
+}
