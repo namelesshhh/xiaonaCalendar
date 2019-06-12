@@ -1,0 +1,84 @@
+
+
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
+/*
+ * 本模块用于存储任务事件及其设定的闹钟提醒
+ * 为了设计简单，将设定的闹钟时间当做保存的文件的名字
+ * */
+public class CalendarFile implements ActionListener{
+	
+    static String filenameTemp;
+	JButton jb1 = new JButton("提交");
+	JTextArea textArea1 = new JTextArea();
+	JTextArea textArea2 = new JTextArea();
+	public CalendarFile(String name) {
+		filenameTemp = name;
+		jb1.addActionListener(this);
+		JFrame frame = new JFrame("任务创建");
+		frame.setBounds(200,200,300,400);
+		
+		//create 基panel
+		JPanel contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5,5,5,5));
+		contentPane.setLayout(new BorderLayout(0,0));
+		frame.setContentPane(contentPane);
+		//north
+		JPanel panel1 = new JPanel();
+		FlowLayout f1_Panel = new FlowLayout();
+		f1_Panel.setAlignment(FlowLayout.LEFT);
+		contentPane.add(panel1,BorderLayout.NORTH);
+		JLabel label = new JLabel("请输入您的任务：");
+		panel1.add(label);
+		//center
+		
+		Box vBox = Box.createVerticalBox();
+		contentPane.add(vBox,BorderLayout.CENTER);
+
+		JScrollPane scrollPaneMission = new JScrollPane();
+		JScrollPane scrollPaneDate = new JScrollPane();
+		JLabel label2 = new JLabel("请输入您的时间：(格式为如xx:yy)");
+		vBox.add(scrollPaneMission);
+		vBox.add(label2);
+		vBox.add(scrollPaneDate);
+	
+		scrollPaneMission.setViewportView(textArea1);
+		scrollPaneDate.setViewportView(textArea2);
+		
+		//south
+		JPanel panel2 = new JPanel();
+		
+		panel2.add(jb1);
+		contentPane.add(panel2,BorderLayout.SOUTH);
+		
+		
+	
+		frame.setVisible(true);
+	}
+	  public void actionPerformed(ActionEvent e) {
+		  if(e.getSource() == jb1) {
+			  
+			//保存文件
+			//filenameTemp是文件名---年月日部分
+			CalendarSave.createFile(filenameTemp + textArea2.getText(), textArea1.getText());
+		  }
+	  }
+	  
+	  /*
+		public static void main(String[]args){
+		  CalendarFile example=new CalendarFile("1233");
+	    }
+	    */
+}
