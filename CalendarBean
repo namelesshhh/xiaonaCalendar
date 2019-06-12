@@ -1,5 +1,5 @@
 
-
+//这个类是用来生成日历数据的，不用更改
 import java.util.Calendar;   
  
 public class CalendarBean   
