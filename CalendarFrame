@@ -1,4 +1,6 @@
-
+/*
+*本类用作显示日历主页面
+*/
 import java.awt.*;   
 import java.awt.event.*;
 import java.util.Calendar;
