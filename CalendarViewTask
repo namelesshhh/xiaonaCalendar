@@ -1,0 +1,92 @@
+
+
+import java.awt.GridLayout;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
+public class CalendarViewTask {
+	public CalendarViewTask(String date) throws FileNotFoundException {
+		JFrame jf = new JFrame("ViewTask");
+        jf.setSize(250, 200);
+        jf.setLocationRelativeTo(null);
+       // jf.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(6,1));
+        // 创建复选框
+        JCheckBox[] checkBox = new JCheckBox[6];
+        List resultList = fileName(date);
+        
+        for(int i = 0; i < resultList.size(); i++) {
+        	checkBox[i] = new JCheckBox(fileContent(resultList.get(i).toString()));
+        	panel.add(checkBox[i]);
+        }
+        
+
+        // 添加第一个复选框的状态被改变的监听（其他复选框如果需要监听状态改变，则可按此方法添加监听）
+        if(resultList.size() > 0) {
+        	checkBox[0].addChangeListener(new ChangeListener() {
+                @Override
+                public void stateChanged(ChangeEvent e) {
+                    // 获取事件源（即复选框本身）
+                    JCheckBox checkBox = (JCheckBox) e.getSource();
+                    System.out.println(checkBox.getText() + " 是否选中: " + checkBox.isSelected());
+                }
+            });
+        }
+        	
+
+        // 设置默认第一个复选框选中
+      //  checkBox01.setSelected(true);
+
+        jf.setContentPane(panel);
+        jf.setVisible(true);
+	}
+	/*
+	 * @param date 当天日期
+	 * @return resultList 当天所有任务的集合
+	 * */
+	
+	public static List fileName(String date) {
+		
+		 //    在此目录中找文件   
+        String baseDIR = "d:/file";    
+        //    找扩展名为txt的文件   
+        //String fileName = "????_year_?_month_1_day_*.txt"; 
+        String fileName = date + "*.txt";
+        List resultList = new ArrayList();   
+        FCalendarFileSearcher.findFiles(baseDIR, fileName, resultList);    
+        if (resultList.size() == 0) {   
+            System.out.println("No File Fount.");   
+        }   
+		return resultList;
+	}
+	/*
+	 * @param fileName 文件地址
+	 * @return 文件内容
+	 * */
+	public static String fileContent(String fileName) throws FileNotFoundException {
+		StringBuilder resultString = new StringBuilder();
+		Scanner rd = new Scanner(new File(fileName));
+		while(rd.hasNext()) {
+			resultString.append(rd.nextLine());
+		}
+		rd.close();
+		return resultString.toString();
+	}
+	
+	public static void main(String[] argv) throws FileNotFoundException {
+		new CalendarViewTask("1996_year_1_month_1_day_");
+	}
+	
+}
