@@ -1,3 +1,4 @@
+package softwareWork;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -9,11 +10,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class CalendarSelect implements ActionListener{
-	static String fileName;
-	static JButton view = new JButton("查看");
-	static JButton add = new JButton("添加");
+	String fileName;
+	JButton view = new JButton("查看");
+	JButton add = new JButton("添加");
+	static int cnt;
 	public CalendarSelect(String fileNameT) {
-	
+		cnt = 0;
 		fileName = fileNameT;
 		JFrame base = new JFrame();
 		base.setBounds(400, 400, 200, 200);
@@ -30,6 +32,8 @@ public class CalendarSelect implements ActionListener{
 	public void actionPerformed(ActionEvent e)  {
 		if(e.getSource() == view) {
 			try {
+				System.out.println("selectView");
+				
 				new CalendarViewTask(fileName);
 			} catch (FileNotFoundException e1) {
 				// TODO Auto-generated catch block
@@ -39,6 +43,11 @@ public class CalendarSelect implements ActionListener{
 		else if(e.getSource() == add) {
 			new CalendarFile(fileName);
 		}
+		
 	}
 	
+	public static void main(String[] argv) {
+		
+		new CalendarSelect("1996_year_1_month_1_day_");
+	}
 }
